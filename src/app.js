@@ -83,6 +83,7 @@ class App extends Component {
               channelTitle: song.artist,
             },
             id: { videoId: song.url },
+            votes: item.vote
           };
         });
         this.setState({ userPlaylist });

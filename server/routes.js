@@ -59,6 +59,7 @@ router.put('/vote', async (req, res) => {
     .catch((err) => {
       console.error(err)
     })
+    return;
   } else {
     const playlistSong = await PlaylistSong.findOne({ where: { songId: song.id, playlistId: playlist.id } })
     let voteObj = { vote: playlistSong.vote }
@@ -66,6 +67,9 @@ router.put('/vote', async (req, res) => {
       voteObj.vote++;
     } else if (direction === 'down' && voteObj.vote !== 0) {
       voteObj.vote--;
+    } else {
+      res.send({ newVoteCount: voteObj.vote});
+      return;
     }
     const partySongUser = await PartySongUser.findOne({ where: { partyId: party.id, songId: song.id, userId } })
     if (partySongUser === null) {
@@ -74,6 +78,8 @@ router.put('/vote', async (req, res) => {
       .then(() => {
         res.send({ newVoteCount: playlistSong.vote })
       })
+    } else {
+      res.send({ newVoteCount: playlistSong.vote })
     }
   }
 });

@@ -13,10 +13,10 @@ const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId 
       accessCode
     })
     .then(({ data }) => {
-      console.log('this is the response from votes database', data);
-      setVoteCount(data.newVoteCount);
+      setVoteCount(data.newVoteCount || 0);
     })
   }
+  voteUpdate()
   return (
     <div>
       <div>
