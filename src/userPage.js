@@ -2,16 +2,19 @@ import React from 'react';
 import SearchResults from './searchResults.js';
 import Playlist from './playlist.js';
 import Search from './search.js';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { Route, BrowserRouter, Link } from 'react-router-dom';
 
 const UserPage = ({
   videos,
   clickHostParty,
+  clickJoinParty,
   searchHandler,
   listClickHandler,
   userPlaylist,
   code,
   handleFormChange,
+  handleFormSubmit,
+  currentUser
 }) => {
   let playlist;
   if (userPlaylist.length > 0) {
@@ -21,7 +24,7 @@ const UserPage = ({
   return (
     <div>
       <h1>JUKE JAMS!</h1>
-      <div>User profile page</div>
+    <div>{`Welcome, ${currentUser.split(' ')[0]}!`}</div>
       <button onClick={() => clickHostParty()}>Host a Party</button>{' '}
       <form>
         <label>
@@ -32,11 +35,11 @@ const UserPage = ({
             onChange={(event) => handleFormChange(event)}
           />
         </label>
-        <BrowserRouter>
-          <Link to={`/${code}`}>
-            <button>Submit</button>
-          </Link>
-        </BrowserRouter>
+        {/* <BrowserRouter>
+          <Link to={`/${code}`}> */}
+            <button onClick={clickJoinParty}>Submit</button>
+          {/* </Link>
+        </BrowserRouter> */}
       </form>
       <Search searchHandler={searchHandler} />
       <SearchResults

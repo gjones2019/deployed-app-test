@@ -1,23 +1,32 @@
 import React from 'react';
 import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { Route, BrowserRouter, Link } from 'react-router-dom';
 
 const PartyPage = ({
   video,
   userPlaylist,
+  hostPartyClicked,
+  toggleHost,
   dropHostParty,
+  HostParty,
   listClickHandler,
   voteUpdate,
+  clickHostParty,
+  accessCode,
+  userId,
+  nowPlaying
 }) => {
   return (
     <div>
-      Made it to the party page!
-      <VideoPlayer video={video} />
+      Your Party Access Code is: {`${accessCode}`}
+      <VideoPlayer video={video} nowPlaying={nowPlaying} />
       <Queue
+        accessCode={accessCode}
         userPlaylist={userPlaylist}
         listClickHandler={listClickHandler}
         voteUpdate={voteUpdate}
+        userId={userId}
       />
       <BrowserRouter>
         <Link to="/ ">

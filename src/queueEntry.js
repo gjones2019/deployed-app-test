@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { PORT } from '../config.js';
 
 
-const QueueEntry = ({ video, listClickHandler }) => {
+const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId }) => {
   const [voteCount, setVoteCount] = useState(0);
-  const voteUpUpdate= () => {
-    axios.put('http://localhost:3000/vote/', {
-      // vote: voteCount + 1,
-      title: video.snippet.title,
+  const voteUpdate = (direction) => {
+    axios.put(`http://localhost:${PORT}/vote/`, {
+      userId,
+      url: video.id.videoId,
+      direction,
+      accessCode
     })
     .then(({ data }) => {
       console.log('this is the response from votes database', data);
       setVoteCount(data.newVoteCount);
-      window.nextVid = data.highestVote.url;
     })
-  }
-  const voteDownUpdate= () => {
-    axios.put('http://localhost:3000/vote/', {
-      vote: voteCount - 1,
-      title: video.snippet.title,
-    })
-    .then()
   }
   return (
     <div>
@@ -35,7 +30,8 @@ const QueueEntry = ({ video, listClickHandler }) => {
           <button
             className="voteUp"
             onClick={() => {
-              voteUpUpdate();
+              // setVoteCount(voteCount + 1);
+              voteUpdate('up');
             }
             }
           >
@@ -44,7 +40,8 @@ const QueueEntry = ({ video, listClickHandler }) => {
           <button
             className="voteDown"
             onClick={() => {
-              voteDownUpdate();
+              // setVoteCount(voteCount - 1)
+              voteUpdate('down');
             }
             }
           >
