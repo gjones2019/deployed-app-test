@@ -22,6 +22,7 @@ class App extends Component {
       currentUser: '',
       currentId: '',
       userPlaylist: [],
+      partyPlaylist: [],
       redirect: false,
       nextVideo: {},
       accessCode: null,
@@ -68,8 +69,8 @@ class App extends Component {
     });
     axios.get(`http://localhost:${PORT}/party/${accessCode}`)
       .then(({ data }) => {
-        let userPlaylist = [];
-        userPlaylist = data.map((item) => {
+        let partyPlaylist = [];
+        partyPlaylist = data.map((item) => {
           const { song } = item;
           if (item.nowPlaying) {
             this.setState({
@@ -86,7 +87,7 @@ class App extends Component {
             votes: item.vote
           };
         });
-        this.setState({ userPlaylist });
+        this.setState({ partyPlaylist });
       })
   }
 
@@ -96,6 +97,7 @@ class App extends Component {
     window.ytPlayer.playVideo();
     this.setState({
       hostPartyClicked: !this.hostPartyClicked,
+      partyPlaylist: this.state.userPlaylist
     });
     this.toggleHost();
   }
@@ -276,14 +278,15 @@ class App extends Component {
       accessCode,
       currentUser,
       currentId,
-      nowPlaying
+      nowPlaying,
+      partyPlaylist
     } = this.state;
     window.accessCode = accessCode;
     if (hostPartyClicked || joinPartyClicked) {
       return (
         <PartyPage
           video={video}
-          userPlaylist={userPlaylist}
+          partyPlaylist={partyPlaylist}
           hostPartyClicked={hostPartyClicked}
           dropHostParty={this.dropHostParty}
           listClickHandler={this.listClickHandler}

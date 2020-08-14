@@ -44,7 +44,8 @@ router.post('/login', async (req, res) => {
 
 // update / reset votes
 router.put('/vote', async (req, res) => {
-  const { url, direction, accessCode, reset, userId } = req.body
+  console.log('vote request body', req.body);
+  const { url, direction, accessCode, reset, userId } = req.body;
   const party = await Party.findOne({ where: { accessCode } });
   const playlist = await Playlist.findOne({ where: { userId: party.hostId } })
   const song = url && await Song.findOne({ where: { url } })
@@ -54,13 +55,14 @@ router.put('/vote', async (req, res) => {
     const playlistSongs = await PlaylistSong.findAll({ where: { playlistId: playlist.id } }, {raw: true});
     await Promise.all(playlistSongs.map(song => song.update({ vote: null })))
     .then(() => {
-      res.sendStatus(200)
+      res.sendStatus(200);
     })
     .catch((err) => {
-      console.error(err)
+      console.error(err);
     })
     return;
   } else {
+    console.log(song, playlist);
     const playlistSong = await PlaylistSong.findOne({ where: { songId: song.id, playlistId: playlist.id } })
     let voteObj = { vote: playlistSong.vote }
     if (direction === 'up') {
