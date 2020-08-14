@@ -17,6 +17,7 @@ const PartyPage = ({
   userId,
   nowPlaying
 }) => {
+  const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
     <div>
       Your Party Access Code is: {`${accessCode}`}
@@ -30,7 +31,7 @@ const PartyPage = ({
       />
       <BrowserRouter>
         <Link to="/ ">
-          <button onClick={() => dropHostParty()}>Drop Hosted Party</button>{' '}
+          <button onClick={() => dropHostParty()}>{buttonText}</button>{' '}
         </Link>
       </BrowserRouter>
     </div>

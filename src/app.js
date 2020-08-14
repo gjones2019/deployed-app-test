@@ -101,18 +101,24 @@ class App extends Component {
   }
 
   dropHostParty() {
-    $('#player').toggle();
-    window.ytPlayer.stopVideo();
-    this.setState({
-      hostPartyClicked: false,
-    });
-    this.toggleHost();
-    axios.put(`http://localhost:${PORT}/vote/`, {
-      url: null,
-      direction: null,
-      accessCode,
-      reset: true
-    })
+    if (this.hostPartyClicked) {
+      $('#player').toggle();
+      window.ytPlayer.stopVideo();
+      this.setState({
+        hostPartyClicked: false,
+      });
+      this.toggleHost();
+      axios.put(`http://localhost:${PORT}/vote/`, {
+        url: null,
+        direction: null,
+        accessCode,
+        reset: true
+      })
+    } else {
+      this.setState({
+        joinPartyClicked: false
+      })
+    }
     return (
       <BrowserRouter>
         <Route to="/"></Route>
