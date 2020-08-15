@@ -13,102 +13,103 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect: 'mysql',
 });
 
+// const User = sequelize.define('User', {
+//   firstName: Sequelize.STRING,
+//   lastName: Sequelize.STRING,
+//   hostedPartyId: Sequelize.INTEGER,
+//   email: {
+// 		type: Sequelize.STRING,
+// 		unique: true
+// 	},
+// });
+
+// const Song = sequelize.define('Song', {
+//   url: {
+// 		type: Sequelize.STRING,
+// 		unique: true
+// 	},
+//   title: Sequelize.STRING,
+//   artist: Sequelize.STRING,
+//   thumbnail: Sequelize.STRING,
+// });
+
+// const Playlist = sequelize.define('Playlist', {
+//   userId: {
+// 		type: Sequelize.INTEGER,
+// 		unique: true,
+//     references: {
+//       model: 'Users',
+//       referencesKey: 'id',
+//     },
+//   },
+// });
+
+// const PlaylistSong = sequelize.define('PlaylistSong', {
+//   playlistId: {
+//     type: Sequelize.INTEGER,
+//     references: {
+//       model: 'Playlists',
+//       referencesKey: 'id',
+//     },
+//   },
+//   songId: {
+//     type: Sequelize.INTEGER,
+//     references: {
+//       model: 'Songs',
+//       referencesKey: 'id',
+//     },
+//   },
+//   vote: Sequelize.INTEGER,
+// });
+
+// const Party = sequelize.define('Party', {
+//   hostId: {
+//     type: Sequelize.INTEGER,
+//     references: {
+//       model: 'Users',
+//       referencesKey: 'id',
+//     },
+// 	},
+// 	accessCode: Sequelize.STRING,
+// 	nowPlaying: Sequelize.STRING,
+// });
+
+// const PartySongUser = sequelize.define('PartySongUser', {
+// 	partyId: {
+//     type: Sequelize.INTEGER,
+//     references: {
+//       model: 'Parties',
+//       referencesKey: 'id',
+// 		}
+// 	},
+// 	songId: {
+// 		type: Sequelize.INTEGER,
+// 		references: {
+// 			model: 'Songs',
+// 			referencesKey: 'id',
+// 		}
+// 	},
+// 	userId: {
+//     type: Sequelize.INTEGER,
+//     references: {
+//       model: 'Users',
+//       referencesKey: 'id',
+// 		}
+// 	}
+// });
+
+// sequelize
+//   .query('DROP DATABASE IF EXISTS greenfield')
+//   .then(() => sequelize.query('CREATE DATABASE greenfield'))
+//   .then(() => sequelize.query('USE greenfield'))
+//   .then(() => {
+
 const User = sequelize.define('User', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
   hostedPartyId: Sequelize.INTEGER,
-  email: {
-		type: Sequelize.STRING,
-		unique: true
-	},
+  email: Sequelize.STRING,
 });
-
-const Song = sequelize.define('Song', {
-  url: {
-		type: Sequelize.STRING,
-		unique: true
-	},
-  title: Sequelize.STRING,
-  artist: Sequelize.STRING,
-  thumbnail: Sequelize.STRING,
-});
-
-const Playlist = sequelize.define('Playlist', {
-  userId: {
-		type: Sequelize.INTEGER,
-		unique: true,
-    references: {
-      model: 'Users',
-      referencesKey: 'id',
-    },
-  },
-});
-
-const PlaylistSong = sequelize.define('PlaylistSong', {
-  playlistId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'Playlists',
-      referencesKey: 'id',
-    },
-  },
-  songId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'Songs',
-      referencesKey: 'id',
-    },
-  },
-  vote: Sequelize.INTEGER,
-});
-
-const Party = sequelize.define('Party', {
-  hostId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'Users',
-      referencesKey: 'id',
-    },
-	},
-	accessCode: Sequelize.STRING,
-	nowPlaying: Sequelize.STRING,
-});
-
-const PartySongUser = sequelize.define('PartySongUser', {
-	partyId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'Parties',
-      referencesKey: 'id',
-		}
-	},
-	songId: {
-		type: Sequelize.INTEGER,
-		references: {
-			model: 'Songs',
-			referencesKey: 'id',
-		}
-	},
-	userId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'Users',
-      referencesKey: 'id',
-		}
-	}
-});
-
-sequelize
-  .query('DROP DATABASE IF EXISTS greenfield')
-  .then(() => sequelize.query('CREATE DATABASE greenfield'))
-  .then(() => sequelize.query('USE greenfield'))
-  .then(() => {
-    const User = sequelize.define('User', {
-      firstName: Sequelize.STRING,
-      lastName: Sequelize.STRING,
-      hostedPartyId: Sequelize.INTEGER,
-      email: Sequelize.STRING,
-    });
 
 const Song = sequelize.define('Song', {
 	url: Sequelize.STRING,
@@ -180,22 +181,25 @@ const PartySongUser = sequelize.define('PartySongUser', {
 		}
 	}
 });
+const sync = async () => {
+  await Song.sync({ force: true });
+  await User.sync({ force: true })
+  await Playlist.sync({ force: true });
+  await PlaylistSong.sync({ force: true });
+  await Party.sync({ force: true });
+  await PartySongUser.sync({ force: true });
+}
 
-    Song.sync({ force: true });
-    User.sync({ force: true })
-      .then(() => {
-        Playlist.sync({ force: true });
-        PlaylistSong.sync({ force: true });
-				Party.sync({ force: true });
-				PartySongUser.sync({ force: true });
-      })
+sync();
+      // .then(() => {
+      // })
       // .then(() => {
       //   return [User, Song, Playlist, PlaylistSong, Party];
       // })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+      // .catch((err) => {
+      //   console.log(err);
+      // });
+  // });
 
 module.exports = {
   User,
