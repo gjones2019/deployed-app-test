@@ -34,15 +34,16 @@
     "jquery": "^3.5.1",
     "mongoose": "^5.9.28",
     "mysql": "^2.18.1",
+    "mysql-server": "^1.0.5",
     "mysql2": "^2.1.0",
+    "nodemon": "^2.0.4",
     "passport-google-oauth": "^2.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.21",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "sequelize": "^6.3.4",
-    "nodemon": "^2.0.4"
+    "sequelize": "^6.3.4"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
