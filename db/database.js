@@ -195,7 +195,10 @@ const PartySongUser = sequelize.define('PartySongUser', {
       .catch((err) => {
         console.log(err);
       });
-  });
+  })
+  .catch((err) => {
+    console.error(err);
+  })
 
 module.exports = {
   User,
