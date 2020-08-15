@@ -144,6 +144,7 @@ class App extends Component {
   }
 
   responseGoogle(response) {
+    console.log('googoo response', response);
     axios
       .post(`http://localhost:${PORT}/login`, {
         firstName: response.profileObj.givenName,
