@@ -30,11 +30,11 @@ const PartyPage = ({
         voteUpdate={voteUpdate}
         userId={userId}
       />
-      <BrowserRouter>
-        <Link to="/ ">
+      {/* <BrowserRouter>
+        <Link to="/ "> */}
           <button onClick={() => dropHostParty()}>{buttonText}</button>{' '}
-        </Link>
-      </BrowserRouter>
+        {/* </Link>
+      </BrowserRouter> */}
     </div>
   );
 };

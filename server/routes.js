@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
 
 // update / reset votes
 router.put('/vote', async (req, res) => {
-  console.log('vote request body', req.body);
+  // console.log('vote request body', req.body)
   const { url, direction, accessCode, reset, userId } = req.body;
   const party = await Party.findOne({ where: { accessCode } });
   const playlist = await Playlist.findOne({ where: { userId: party.hostId } })
@@ -62,7 +62,7 @@ router.put('/vote', async (req, res) => {
     })
     return;
   } else {
-    console.log(song, playlist);
+    // console.log(song, playlist);
     const playlistSong = await PlaylistSong.findOne({ where: { songId: song.id, playlistId: playlist.id } })
     let voteObj = { vote: playlistSong.vote }
     if (direction === 'up') {
@@ -108,20 +108,28 @@ router.get('/party/:code', async (req, res) => {
 
 // create / delete host
 router.post('/host', async (req, res) => {
-  const { host, id, accessCode } = req.body;
+  const { host, id } = req.body;
   const user = await User.findByPk(id);
   const party = await Party.findOne({ where: { hostId: id } });
   if (host === false) {
     user.update({ hostedPartyId: null });
   } else {
     if (party === null) {
+      let accessCode = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const charactersLength = characters.length;
+      for (var i = 0; i < 5; i++) {
+        accessCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
       Party.create({ hostId: id, accessCode })
       .then(({ dataValues }) => {
         user.update({ hostedPartyId: dataValues.id });
+        res.send(accessCode);
       });
+    } else {
+      res.send(party.accessCode);
     }
   }
-  res.sendStatus(200);
 });
 
 router.post('/playlist/:user', async (req, res) => {

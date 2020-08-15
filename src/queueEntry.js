@@ -16,7 +16,7 @@ const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId 
       setVoteCount(data.newVoteCount || 0);
     })
   }
-  voteUpdate()
+  // voteUpdate()
   return (
     <div>
       <div>

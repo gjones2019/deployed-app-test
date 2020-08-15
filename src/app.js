@@ -35,7 +35,6 @@ class App extends Component {
     this.toggleHost = this.toggleHost.bind(this);
     this.listClickHandler = this.listClickHandler.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
-    this.makeID = this.makeID.bind(this);
     this.clickJoinParty = this.clickJoinParty.bind(this);
   }
 
@@ -49,17 +48,6 @@ class App extends Component {
     return this.setState({
       accessCode: event.target.value,
     });
-  }
-
-  makeID() {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    const charactersLength = characters.length;
-    for (var i = 0; i < 5; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    
-    return result;
   }
 
   clickJoinParty() {
@@ -84,7 +72,7 @@ class App extends Component {
               channelTitle: song.artist,
             },
             id: { videoId: song.url },
-            votes: item.vote
+            votes: item.vote || 0
           };
         });
         this.setState({ partyPlaylist });
@@ -92,18 +80,20 @@ class App extends Component {
   }
 
   clickHostParty() {
-    window.ytPlayer.loadVideoById(this.state.video.id.videoId)
-    $('#player').toggle();
-    window.ytPlayer.playVideo();
-    this.setState({
-      hostPartyClicked: !this.hostPartyClicked,
-      partyPlaylist: this.state.userPlaylist
-    });
-    this.toggleHost();
+    if (this.state.video.id) {
+      window.ytPlayer.loadVideoById(this.state.video.id.videoId)
+      $('#player').toggle();
+      window.ytPlayer.playVideo();
+      this.setState({
+        hostPartyClicked: !this.hostPartyClicked,
+        partyPlaylist: this.state.userPlaylist
+      });
+      this.toggleHost();
+    }
   }
 
   dropHostParty() {
-    if (this.hostPartyClicked) {
+    if (this.state.hostPartyClicked) {
       $('#player').toggle();
       window.ytPlayer.stopVideo();
       this.setState({
@@ -115,30 +105,31 @@ class App extends Component {
         direction: null,
         accessCode,
         reset: true
-      })
+      });
     } else {
       this.setState({
         joinPartyClicked: false
       })
     }
-    return (
-      <BrowserRouter>
-        <Route to="/"></Route>
-      </BrowserRouter>
-    );
+    // return (
+    //   <BrowserRouter>
+    //     <Route to="/"></Route>
+    //   </BrowserRouter>
+    // );
   }
 
   toggleHost() {
-    const { currentId, hostPartyClicked, video } = this.state;
-    const accessCode = this.state.accessCode || this.makeID()
+    const { currentId, hostPartyClicked } = this.state;
+    // const accessCode = this.state.accessCode || this.makeID()
     if (!hostPartyClicked) {
-      this.setState({
-        accessCode
-      });
       axios.post(`http://localhost:${PORT}/host`, {
         host: true,
         id: currentId,
-        accessCode
+      })
+      .then(({ data }) => {
+        this.setState({
+          accessCode: data
+        });
       });
     } else {
       this.setState({
@@ -148,7 +139,6 @@ class App extends Component {
       axios.post(`http://localhost:${PORT}/host`, {
         host: false,
         id: currentId,
-        accessCode
       });
     }
   }
@@ -222,7 +212,7 @@ class App extends Component {
   // Handles Clicks on YouTube Search Results
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
-    console.log('clicked list item', video);
+    // console.log('clicked list item', video);
 
     if (hostPartyClicked) {
       this.setState({ video });
