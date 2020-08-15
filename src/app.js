@@ -145,6 +145,13 @@ class App extends Component {
 
   responseGoogle(response) {
     console.log('google response', response);
+    console.log('post request URL', `${URL}:${PORT}/login`);
+    console.log('post request BODY', {
+      firstName: response.profileObj.givenName,
+      lastName: response.profileObj.familyName,
+      host: false,
+      email: response.profileObj.email,
+    });
     axios
       .post(`${URL}:${PORT}/login`, {
         firstName: response.profileObj.givenName,
@@ -153,6 +160,7 @@ class App extends Component {
         email: response.profileObj.email,
       })
       .then(({ data }) => {
+        console.log('response from server:', data);
         let userPlaylist = [];
         let video = {};
         if (data.songs) {
