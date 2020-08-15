@@ -99,9 +99,9 @@ const PartySongUser = sequelize.define('PartySongUser', {
 });
 
 sequelize
-  .query('DROP DATABASE IF EXISTS greenfield')
-  .then(() => sequelize.query('CREATE DATABASE greenfield'))
-  .then(() => sequelize.query('USE greenfield'))
+  .query('DROP DATABASE IF EXISTS heroku_7fc0b61d52aef9c')
+  .then(() => sequelize.query('CREATE DATABASE heroku_7fc0b61d52aef9c'))
+  .then(() => sequelize.query('USE heroku_7fc0b61d52aef9c'))
   .then(() => {
     const User = sequelize.define('User', {
       firstName: Sequelize.STRING,
