@@ -5,11 +5,11 @@ const Sequelize = require('sequelize');
 const DB_NAME = 'greenfield'
 const DB_USER = 'root'
 const DB_PASS = ''
-// const DB_HOST =
+const DB_HOST = 'http://jukejams.herokuapp.com'
 
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-  // host: DB_HOST,
+  host: DB_HOST,
   dialect: 'mysql',
 });
 
