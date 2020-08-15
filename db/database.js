@@ -3,7 +3,7 @@
 const Sequelize = require('sequelize');
 // const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
 const DB_NAME = 'greenfield'
-const DB_USER = 'jukejams'
+const DB_USER = 'admin'
 const DB_PASS = 'jukejams'
 const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com'
 
