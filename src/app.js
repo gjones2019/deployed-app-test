@@ -6,6 +6,7 @@ import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID, PORT, URL } from '../config.js';
+import { PORT } from '../server/index.js'
 import { Route, BrowserRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import player from './youTubeScript.js';
