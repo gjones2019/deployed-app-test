@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Practicing deployment.",
   "main": "index.js",
+  "engines": {
+    "node": "8.x"
+  },
   "scripts": {
     "start": "nodemon server/index.js",
     "dev": "webpack --mode development --open --hot --watch",
