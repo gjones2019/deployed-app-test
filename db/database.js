@@ -2,15 +2,16 @@
 
 const Sequelize = require('sequelize');
 // const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
-const DB_NAME = 'heroku_7fc0b61d52aef9c'
-const DB_USER = 'ba68e256502904'
-const DB_PASS = 'bb577b64'
-const DB_HOST = 'us-cdbr-east-02.cleardb.com'
+const DB_NAME = 'greenfield'
+const DB_USER = 'jukejams'
+const DB_PASS = 'jukejams'
+const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com'
 
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-  host: DB_HOST,
-  dialect: 'postgres',
+  dialect:  'mysql',
+  port:     3306,
+  host:     DB_HOST,
 });
 
 const User = sequelize.define('User', {
@@ -99,9 +100,9 @@ const PartySongUser = sequelize.define('PartySongUser', {
 });
 
 sequelize
-  .query('DROP DATABASE IF EXISTS heroku_7fc0b61d52aef9c')
-  .then(() => sequelize.query('CREATE DATABASE heroku_7fc0b61d52aef9c'))
-  .then(() => sequelize.query('USE heroku_7fc0b61d52aef9c'))
+  .query('DROP DATABASE IF EXISTS greenfield')
+  .then(() => sequelize.query('CREATE DATABASE greenfield'))
+  .then(() => sequelize.query('USE greenfield'))
   .then(() => {
     const User = sequelize.define('User', {
       firstName: Sequelize.STRING,
