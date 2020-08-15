@@ -2,10 +2,10 @@
 
 const Sequelize = require('sequelize');
 // const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
-const DB_NAME = 'greenfield'
-const DB_USER = 'root'
-const DB_PASS = ''
-const DB_HOST = 'mysql://ba68e256502904:bb577b64@us-cdbr-east-02.cleardb.com/heroku_7fc0b61d52aef9c?reconnect=true'
+const DB_NAME = 'heroku_7fc0b61d52aef9c'
+const DB_USER = 'ba68e256502904'
+const DB_PASS = 'bb577b64'
+const DB_HOST = 'us-cdbr-east-02.cleardb.com'
 
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
