@@ -2,7 +2,6 @@ import React from 'react';
 import SearchResults from './searchResults.js';
 import Playlist from './playlist.js';
 import Search from './search.js';
-import { Route, BrowserRouter, Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
 const UserPage = ({
