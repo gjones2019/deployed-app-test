@@ -11,6 +11,6 @@ const URL = 'http://jukejams.herokuapp.com'
 module.exports = {
   OAUTH_CLIENT_ID,
   YOUTUBE_API_KEY,
-  PORT,
+  // PORT,
   URL
 };

@@ -5,8 +5,8 @@ import QueueEntry from './queueEntry.js';
 // import exampleVideoData from '../fakeData.js';
 import GoogleLogin from 'react-google-login';
 import axios from 'axios';
-import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID, URL } from '../config.js';
-import { PORT } from '../server/index.js'
+import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
+import { envPORT } from '../server/index.js'
 import { Route, BrowserRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import player from './youTubeScript.js';
@@ -56,7 +56,7 @@ class App extends Component {
     this.setState({
       joinPartyClicked: true,
     });
-    axios.get(`${URL}:${PORT}/party/${accessCode}`)
+    axios.get(`${URL}:${envPORT}/party/${accessCode}`)
       .then(({ data }) => {
         let partyPlaylist = [];
         partyPlaylist = data.map((item) => {
@@ -101,7 +101,7 @@ class App extends Component {
         hostPartyClicked: false,
       });
       this.toggleHost();
-      axios.put(`${URL}:${PORT}/vote/`, {
+      axios.put(`${URL}:${envPORT}/vote/`, {
         url: null,
         direction: null,
         accessCode,
@@ -123,7 +123,7 @@ class App extends Component {
     const { currentId, hostPartyClicked } = this.state;
     // const accessCode = this.state.accessCode || this.makeID()
     if (!hostPartyClicked) {
-      axios.post(`${URL}:${PORT}/host`, {
+      axios.post(`${URL}:${envPORT}/host`, {
         host: true,
         id: currentId,
       })
@@ -137,7 +137,7 @@ class App extends Component {
         hostPartyClicked: false,
         accessCode: null
       });
-      axios.post(`${URL}:${PORT}/host`, {
+      axios.post(`${URL}:${envPORT}/host`, {
         host: false,
         id: currentId,
       });
@@ -146,7 +146,7 @@ class App extends Component {
 
   responseGoogle(response) {
     console.log('google response', response);
-    console.log('post request URL', `${URL}:${PORT}/login`);
+    console.log('post request URL', `${URL}:${envPORT}/login`);
     console.log('post request BODY', {
       firstName: response.profileObj.givenName,
       lastName: response.profileObj.familyName,
@@ -154,7 +154,7 @@ class App extends Component {
       email: response.profileObj.email,
     });
     axios
-      .post(`${URL}:${PORT}/login`, {
+      .post(`${URL}:${envPORT}/login`, {
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
         host: false,
@@ -230,7 +230,7 @@ class App extends Component {
       // player.stopVideo();
     } else {
       axios
-        .post(`${URL}:${PORT}/playlist/${currentId}`, {
+        .post(`${URL}:${envPORT}/playlist/${currentId}`, {
           url: video.id.videoId,
           title: video.snippet.title,
           artist: video.snippet.channelTitle,
