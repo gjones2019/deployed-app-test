@@ -58,6 +58,7 @@ class App extends Component {
     });
     getParty(accessCode)
       .then(({ data }) => {
+        console.log('response from server for get party',data);
         let partyPlaylist = [];
         partyPlaylist = data.map((item) => {
           const { song } = item;
@@ -76,6 +77,7 @@ class App extends Component {
             votes: item.vote || 0
           };
         });
+        console.log('the mapped playlist', partyPlaylist)
         this.setState({ partyPlaylist });
       })
   }

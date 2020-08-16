@@ -15,7 +15,7 @@ const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteCli
       <div>
         <div onClick={() => listClickHandler(video)}>{video.snippet.title}</div>
         <div>{video.snippet.channelTitle}</div>
-        <div>{voteCountText} votes</div>
+        <div>{voteCount} votes</div>
         <div>
           <Button
             className="voteUp"
