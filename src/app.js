@@ -211,10 +211,8 @@ class App extends Component {
     } else {
         postPlaylist({
           url: video.id.videoId,
-          title: video.snippet.title,
-          artist: video.snippet.channelTitle,
-          thumbnail: video.snippet.thumbnails.default.url,
-        }, currentId)
+          currentId
+        })
         .then(({ data }) => {
           if (data === false) {
             // If song doesn't already exist in database

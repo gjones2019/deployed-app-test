@@ -27,8 +27,8 @@ const getYouTube = (options) => {
   return axios.get('https://www.googleapis.com/youtube/v3/search', options)
 }
 
-const postPlaylist = (options, currentId) => {
-  return axios.post(`${URL}/playlist/${currentId}`, options)
+const postPlaylist = (options) => {
+  return axios.post(`${URL}/playlist`, options)
 }
 
 module.exports = {
