@@ -283,7 +283,7 @@ class App extends Component {
   //   const { userPlaylist } = this.state;
   //   this.setState({
   //     userPlaylist: userPlaylist.sort()
-  //   })
+  //   });
   // }
 
   render() {
