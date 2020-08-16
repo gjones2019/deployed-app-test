@@ -186,7 +186,7 @@ class App extends Component {
       console.log('args are true')
       refresh = setInterval(() => {
         console.log('ran refresh')
-        getParty(accessCode)
+        getParty(window.accessCode)
         .then(({ data }) => {
           console.log('got response from server', data)
           data.forEach(item => {
