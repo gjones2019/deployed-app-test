@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { putVotes } from './axiosRequests';
 import Button from 'react-bootstrap/Button';
 import Image from "react-bootstrap/Image"
+import ListGroup from "react-bootstrap/ListGroup";
 
 
 const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId }) => {
@@ -19,7 +20,7 @@ const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId 
   }
   // voteUpdate()
   return (
-    <div>
+    <ListGroup style={{ padding: "5%" }}>
       <div>
         <Image src={video.snippet.thumbnails.default.url} onClick={() => listClickHandler(video)} rounded></Image>
       </div>
@@ -44,7 +45,7 @@ const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId 
           </Button>
         </div>
       </div>
-    </div>
+    </ListGroup>
   );
 };
 
