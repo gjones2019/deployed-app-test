@@ -3,7 +3,7 @@ const axios = require('axios');
 var tag = document.createElement('script');
 
 function getNextVid() {
-  return axios.get(`http://localhost:42368/party/${accessCode}`)
+  return axios.get(`https://jukejams.herokuapp.com/party/${accessCode}`)
 }
 
       tag.src = "https://www.youtube.com/iframe_api";
@@ -40,7 +40,7 @@ function getNextVid() {
       let currentSongIndex = 0;
 
       function onPlayerStateChange(event) {
-        axios.put(`http://localhost:3000/party/`, {
+        axios.put(`https://jukejams.herokuapp.com/party/`, {
           nowPlaying: window.ytPlayer.getVideoData()['video_id'],
           accessCode
         })

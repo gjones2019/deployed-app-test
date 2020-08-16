@@ -2,25 +2,25 @@
 const axios = require('axios');
 // const { PORT } = process.env;
 // const { URL } = require('../config');
-const URL = 'http://jukejams.herokuapp.com';
-const PORT = 42368;
+const URL = 'https://jukejams.herokuapp.com';
+// const PORT = 42368;
 // const URL = 'http://localhost'
 
 
 const getParty = (accessCode) => {
-  return axios.get(`${URL}:${PORT}/party/${accessCode}`)
+  return axios.get(`${URL}/party/${accessCode}`)
 }
 
 const putVotes = (options) => {
-  return axios.put(`${URL}:${PORT}/vote/`, options);
+  return axios.put(`${URL}/vote/`, options);
 }
 
 const postHost = (options) => {
-  return axios.post(`${URL}:${PORT}/host`, options)
+  return axios.post(`${URL}/host`, options)
 }
 
 const postLogin = (options) => {
-  return axios.post(`${URL}:${PORT}/login`, options)
+  return axios.post(`${URL}/login`, options)
 }
 
 const getYouTube = (options) => {
@@ -28,7 +28,7 @@ const getYouTube = (options) => {
 }
 
 const postPlaylist = (options, currentId) => {
-  return axios.post(`${URL}:${PORT}/playlist/${currentId}`, options)
+  return axios.post(`${URL}/playlist/${currentId}`, options)
 }
 
 module.exports = {
