@@ -1,57 +1,40 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import {Image, ListGroupItem } from "react-bootstrap/";
 
 // Host playlist entry
-const QueueEntry = ({ video, listClickHandler }) => {
-  const [voteCount, setVoteCount] = useState(0);
-  const voteUpUpdate= () => {
-    axios.put('http://localhost:3000/vote/', {
-      title: video.snippet.title,
-    })
-    .then(({ data }) => {
-      console.log('this is the response from votes database', data);
-      setVoteCount(data.newVoteCount);
-      window.nextVid = data.highestVote.url;
-    })
-  }
-  const voteDownUpdate= () => {
-    axios.put('http://localhost:3000/vote/', {
-      vote: voteCount - 1,
-      title: video.snippet.title,
-    })
-    .then()
-  }
+const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, votes }) => {
+  // const [voteCount, setVoteCount] = useState(0);
+  // video.votes = video.votes || 0
+  // let voteCountText = voteClicked ? voteCount : video.votes
+  // voteCountText = voteCountText || 0;
   return (
-    <div>
+    <ListGroupItem action style={{padding: "5%"}}>
       <div>
-        <img src={video.snippet.thumbnails.default.url} onClick={() => listClickHandler(video)}></img>
+        <Image src={video.snippet.thumbnails.default.url} onClick={() => listClickHandler(video)} rounded></Image>
       </div>
       <div>
         <div onClick={() => listClickHandler(video)}>{video.snippet.title}</div>
         <div>{video.snippet.channelTitle}</div>
-        <div>{voteCount} votes</div>
+        <div>{votes[video.id.videoId] || 0} votes</div>
         <div>
-          <button
+          <Button
             className="voteUp"
             onClick={() => {
-              voteUpUpdate();
-            }
-            }
-          >
+              voteUpdate(video, 'up');
+            }}>
             Up vote
-          </button>
-          <button
+          </Button>
+          <Button
             className="voteDown"
             onClick={() => {
-              voteDownUpdate();
-            }
-            }
-          >
+              voteUpdate(video, 'down');
+            }}>
             Down vote
-          </button>
+          </Button>
         </div>
       </div>
-    </div>
+    </ListGroupItem>
   );
 };
 

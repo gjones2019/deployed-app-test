@@ -1,4 +1,6 @@
 node_modules
+dist
 .npm
 .DS_Store
-pleasework2.pem
+.env
+# config.js

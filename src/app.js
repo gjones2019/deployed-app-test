@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import UserPage from './userPage.js';
 import PartyPage from './partyPage.js';
+import QueueEntry from './queueEntry.js';
 import GoogleLogin from 'react-google-login';
-import axios from 'axios';
+import { } from './axiosRequests.js'
 import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
-import { Route, BrowserRouter, Link } from 'react-router-dom';
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
 import $ from 'jquery';
+import player from './youTubeScript.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Button, Jumbotron, OverlayTrigger, Popover } from 'react-bootstrap';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -14,13 +18,17 @@ class App extends Component {
       videos: [],
       video: {},
       hostPartyClicked: false,
+      joinPartyClicked: false,
       loginComplete: false,
       currentUser: '',
       currentId: '',
       userPlaylist: [],
+      partyPlaylist: [],
       redirect: false,
-      code: '',
       nextVideo: {},
+      accessCode: null,
+      nowPlaying: null,
+      votes: {}
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -29,79 +37,116 @@ class App extends Component {
     this.toggleHost = this.toggleHost.bind(this);
     this.listClickHandler = this.listClickHandler.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
-    this.makeID = this.makeID.bind(this);
+    this.clickJoinParty = this.clickJoinParty.bind(this);
+    this.voteUpdate = this.voteUpdate.bind(this);
+    this.refreshParty = this.refreshParty.bind(this);
   }
 
-  // Toggles the player
   componentDidMount() {
     $('#player').toggle();
   }
 
-  // Authorization: login
   handleFormChange(event) {
     return this.setState({
-      code: event.target.value,
+      accessCode: event.target.value,
     });
   }
 
-  // Creates our unique access codes
-  makeID() {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    const charactersLength = characters.length;
-    for (let i = 0; i < 5; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+  clickJoinParty() {
+    const { accessCode, votes } = this.state;
+    getParty(accessCode)
+      .then(({ data }) => {
+        let partyPlaylist = [];
+        partyPlaylist = data.map((item) => {
+          const { song } = item;
+          if (item.nowPlaying) {
+            this.setState({
+              nowPlaying: song
+            })
+          }
+          votes[song.url] = item.vote || 0
+          return {
+            snippet: {
+              thumbnails: { default: { url: song.thumbnail } },
+              title: song.title,
+              channelTitle: song.artist,
+            },
+            id: { videoId: song.url },
+          };
+        });
+        this.setState({ partyPlaylist, votes, joinPartyClicked: true });
+        this.refreshParty(true);
+      })
   }
 
   // Host a party click handler
   clickHostParty() {
-    $('#player').toggle();
-    player.playVideo();
-    this.setState({
-      hostPartyClicked: !this.hostPartyClicked,
-    });
-    this.toggleHost();
+    if (this.state.video.id) {
+      window.ytPlayer.loadVideoById(this.state.video.id.videoId)
+      $('#player').toggle();
+      window.ytPlayer.playVideo();
+      this.setState({
+        hostPartyClicked: !this.hostPartyClicked,
+        partyPlaylist: this.state.userPlaylist
+      });
+      this.toggleHost();
+      this.refreshParty(true);
+    }
   }
 
   // Drop party click handler
   dropHostParty() {
-    this.setState({
-      hostPartyClicked: false,
-    });
-    return (
-      <BrowserRouter>
-        <Route to="/"></Route>
-      </BrowserRouter>
-    );
+    this.refreshParty(false);
+    if (this.state.hostPartyClicked) {
+      $('#player').toggle();
+      window.ytPlayer.stopVideo();
+      this.setState({
+        hostPartyClicked: false,
+        nowPlaying: null
+      });
+      this.toggleHost();
+      putVotes({
+        url: null,
+        direction: null,
+        accessCode,
+        reset: true
+      })
+    } else {
+      this.setState({
+        joinPartyClicked: false,
+        nowPlaying: null
+      })
+    }
   }
 
   // Axios post request to toggle host status
   toggleHost() {
-    const { currentUser, hostPartyClicked } = this.state;
-    console.log('Here is the ID:', this.makeID());
+    const { currentId, hostPartyClicked } = this.state;
     if (!hostPartyClicked) {
-      axios.post('http://localhost:3000/host', {
+      postHost({
         host: true,
-        firstName: currentUser,
+        id: currentId,
+      })
+      .then(({ data }) => {
+        this.setState({
+          accessCode: data
+        });
       });
     } else {
       this.setState({
         hostPartyClicked: false,
+        accessCode: null
       });
-      axios.post('http://localhost:3000/host', {
+      postHost({
         host: false,
-        firstName: currentUser,
+        id: currentId,
       });
     }
   }
 
   // Google auth response
   responseGoogle(response) {
-      console.log(response.details)
-    axios
-      .post('http://localhost:3000/login', {
+      postLogin({
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
         host: false,
@@ -122,7 +167,6 @@ class App extends Component {
             };
           });
         }
-        console.log('axios response user ID', data);
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: response.profileObj.givenName,
@@ -137,9 +181,7 @@ class App extends Component {
   searchHandler(e) {
     const { searchTerm } = this.state;
     if (e === 'click' && searchTerm.length) {
-      console.log('searched', searchTerm);
-      axios
-        .get('https://www.googleapis.com/youtube/v3/search', {
+      getYouTube({
           params: {
             key: YOUTUBE_API_KEY,
             q: searchTerm,
@@ -150,7 +192,6 @@ class App extends Component {
           },
         })
         .then(({ data }) => {
-          console.log(data.items);
           this.setState({
             videos: data.items,
           });
@@ -168,58 +209,78 @@ class App extends Component {
   // Handles clicks on youtube search results list
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
-    console.log('clicked list item', video);
-
     if (hostPartyClicked) {
       this.setState({ video });
-      player.loadVideoById(video.id.videoId);
+      window.ytPlayer.loadVideoById(video.id.videoId);
     } else {
-      axios
-        .post(`http://localhost:3000/playlist/${currentId}`, {
+        postPlaylist({
           url: video.id.videoId,
           title: video.snippet.title,
           artist: video.snippet.channelTitle,
           thumbnail: video.snippet.thumbnails.default.url,
-        })
+        }, currentId)
         .then(({ data }) => {
           if (data === false) {
             this.setState({
               userPlaylist: userPlaylist.concat([video]),
               video: userPlaylist[0],
             });
-            player.loadVideoById(this.state.video.id.videoId);
-            player.stopVideo();
           }
         })
         .catch((err) => console.log(err));
     }
   }
 
+  voteUpdate(video, direction) {
+    const { currentId, accessCode, votes } = this.state;
+    putVotes({
+      userId: currentId,
+      url: video.id.videoId,
+      direction,
+      accessCode
+    })
+    .then(({ data }) => {
+      votes[video.id.videoId] = data.newVoteCount || 0
+      this.setState({
+        votes
+      })
+    });
+  }
+
   render() {
     const {
       videos,
       hostPartyClicked,
+      joinPartyClicked,
       video,
       loginComplete,
       userPlaylist,
-      code,
+      accessCode,
+      currentUser,
+      currentId,
+      nowPlaying,
+      partyPlaylist,
+      votes
     } = this.state;
+    window.accessCode = accessCode;
 
-    //if hostParty is clicked, render the Party Page
-    if (hostPartyClicked) {
+  //if hostParty is clicked, render the Party Page
+    if (hostPartyClicked || joinPartyClicked) {
       return (
         <PartyPage
           video={video}
-          userPlaylist={userPlaylist}
+          partyPlaylist={partyPlaylist}
           hostPartyClicked={hostPartyClicked}
           dropHostParty={this.dropHostParty}
           listClickHandler={this.listClickHandler}
           toggleHost={this.toggleHost}
           voteUpdate={this.voteUpdate}
+          nowPlaying={nowPlaying}
+          votes={votes}
         />
       );
     }
-    // If the login is not complete, then render the google auth again
+  // If the login is not complete, then render the google auth again
     if (!loginComplete) {
       return (
         // Google auth
@@ -234,23 +295,23 @@ class App extends Component {
     }
     // Renders the access code route and user page upon login
     return (
-      <div>
-        <BrowserRouter>
-          <Link to={`/${this.makeID()}`}>
-            <button>GENERATE ACCESS CODE</button>
-          </Link>
-        </BrowserRouter>
-
+  <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
+  <Row style={{ padding: "5px" }}>
+    <Col>
         <UserPage
           clickHostParty={this.clickHostParty}
+          clickJoinParty={this.clickJoinParty}
           videos={videos}
           searchHandler={this.searchHandler}
           listClickHandler={this.listClickHandler}
           userPlaylist={userPlaylist}
           handleFormChange={this.handleFormChange}
-          code={code}
+          accessCode={accessCode}
+          currentUser={currentUser}
         />
-      </div>
+    </Col>
+  </Row>
+  </Container>
     );
   }
 }

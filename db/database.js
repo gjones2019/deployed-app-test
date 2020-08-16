@@ -1,18 +1,17 @@
-require('dotenv').config();
-
+// require('dotenv').config();
 const Sequelize = require('sequelize');
-const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT } = require('../config')
 
-//Connection
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-  host: DB_HOST,
-  dialect: 'mysql',
+  dialect:  'mysql',
+  // port:     DB_PORT,
+  host:     DB_HOST,
 });
 
 const User = sequelize.define('User', {
   firstName: Sequelize.STRING,
   lastName: Sequelize.STRING,
-  host: Sequelize.BOOLEAN,
+  hostedPartyId: Sequelize.INTEGER,
   email: {
 		type: Sequelize.STRING,
 		unique: true
@@ -65,7 +64,33 @@ const Party = sequelize.define('Party', {
       model: 'Users',
       referencesKey: 'id',
     },
-  },
+	},
+	accessCode: Sequelize.STRING,
+	nowPlaying: Sequelize.STRING,
+});
+
+const PartySongUser = sequelize.define('PartySongUser', {
+	partyId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'Parties',
+      referencesKey: 'id',
+		}
+	},
+	songId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: 'Songs',
+			referencesKey: 'id',
+		}
+	},
+	userId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'Users',
+      referencesKey: 'id',
+		}
+	}
 });
 
 sequelize
@@ -76,7 +101,7 @@ sequelize
     const User = sequelize.define('User', {
       firstName: Sequelize.STRING,
       lastName: Sequelize.STRING,
-      host: Sequelize.BOOLEAN,
+      hostedPartyId: Sequelize.INTEGER,
       email: Sequelize.STRING,
     });
 
@@ -122,6 +147,32 @@ const Party = sequelize.define('Party', {
 			model: 'Users',
 			referencesKey: 'id'
 		}
+	},
+	accessCode: Sequelize.STRING,
+	nowPlaying: Sequelize.STRING,
+});
+
+const PartySongUser = sequelize.define('PartySongUser', {
+	partyId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'Parties',
+      referencesKey: 'id',
+		}
+	},
+	songId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: 'Songs',
+			referencesKey: 'id',
+		}
+	},
+	userId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'Users',
+      referencesKey: 'id',
+		}
 	}
 });
 
@@ -130,20 +181,22 @@ const Party = sequelize.define('Party', {
       .then(() => {
         Playlist.sync({ force: true });
         PlaylistSong.sync({ force: true });
-        Party.sync({ force: true });
-      })
-      .then(() => {
-        return [User, Song, Playlist, PlaylistSong, Party];
+				Party.sync({ force: true });
+				PartySongUser.sync({ force: true });
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  })
+  .catch((err) => {
+    console.error(err);
+  })
 
 module.exports = {
   User,
   Song,
   Playlist,
   PlaylistSong,
-  Party,
+	Party,
+	PartySongUser
 };

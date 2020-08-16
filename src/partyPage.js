@@ -1,31 +1,36 @@
 import React from 'react';
 import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
-import { BrowserRouter, Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 
 // Party page
 const PartyPage = ({
   video,
   userPlaylist,
+  hostPartyClicked,
+  toggleHost,
   dropHostParty,
+  HostParty,
   listClickHandler,
   voteUpdate,
+  clickHostParty,
+  nowPlaying,
+  partyPlaylist,
+  votes
 }) => {
+  const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
-    <div>
-      Made it to the party page!
-      <VideoPlayer video={video} />
+    <div style={{ color: "black", backgroundColor: "#ECEBEB", fontFamily: "fantasy", textalign: "center", fontSize: 15, fontWeight: 60, textAlign: "center", padding: "10px 20px" }}>
+      Your Party Access Code is: {`${accessCode}`}
+      <VideoPlayer video={video} nowPlaying={nowPlaying} />
       <Queue
-        userPlaylist={userPlaylist}
+        partyPlaylist={partyPlaylist}
         listClickHandler={listClickHandler}
         voteUpdate={voteUpdate}
+        votes={votes}
       />
-      <BrowserRouter>
-        <Link to="/ ">
-          <button onClick={() => dropHostParty()}>Drop Hosted Party</button>{' '}
-        </Link>
-      </BrowserRouter>
+          <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
     </div>
   );
 };

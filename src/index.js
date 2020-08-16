@@ -3,4 +3,6 @@ import { render } from 'react-dom';
 
 import App from './app';
 
+import 'bootstrap/dist/css/bootstrap.css';
+
 render(<App />, document.getElementById('app-root'));
