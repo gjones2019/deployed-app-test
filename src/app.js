@@ -37,6 +37,7 @@ class App extends Component {
     this.listClickHandler = this.listClickHandler.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
     this.clickJoinParty = this.clickJoinParty.bind(this);
+    this.voteUpdate = this.voteUpdate.bind(this);
   }
 
   componentDidMount() {
