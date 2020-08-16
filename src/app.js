@@ -276,7 +276,7 @@ class App extends Component {
       this.setState({
         votes
       })
-    })
+    });
   }
 
   // sortPlaylist() {
