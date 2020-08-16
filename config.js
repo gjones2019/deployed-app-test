@@ -9,7 +9,7 @@ const URL = 'https://jukejams.herokuapp.com'
 // const PORT = 3000;
 const DB_NAME = 'greenfield'
 const DB_USER = 'sgroot'
-const DB_PASS = '%2C7wApy3k7TrjLCiB'
+const DB_PASS = ',7wApy3k7TrjLCiB'
 const DB_HOST = 'SG-Database-2937-master.servers.mongodirector.com'
 const DB_PORT = 3306
 
