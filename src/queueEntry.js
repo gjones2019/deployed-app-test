@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { PORT, URL } from '../config.js';
+import { putVotes } from './axiosRequests';
 
 
 const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId }) => {
   const [voteCount, setVoteCount] = useState(0);
   const voteUpdate = (direction) => {
-    axios.put(`${URL}:${PORT}/vote/`, {
+    putVotes({
       userId,
       url: video.id.videoId,
       direction,

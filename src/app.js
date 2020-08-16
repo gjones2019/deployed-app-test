@@ -4,9 +4,10 @@ import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
 // import exampleVideoData from '../fakeData.js';
 import GoogleLogin from 'react-google-login';
-import axios from 'axios';
-import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
-import { envPORT } from '../server/index.js'
+// import axios from 'axios';
+import { } from './axiosRequests.js'
+import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID, PORT } from '../config.js';
+import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
 import { Route, BrowserRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import player from './youTubeScript.js';
@@ -41,7 +42,7 @@ class App extends Component {
 
   componentDidMount() {
     $('#player').toggle();
-    window.axios = axios;
+    // window.axios = axios;
   }
   // Authorization: login
 
@@ -56,7 +57,7 @@ class App extends Component {
     this.setState({
       joinPartyClicked: true,
     });
-    axios.get(`${URL}:${envPORT}/party/${accessCode}`)
+    getParty(accessCode)
       .then(({ data }) => {
         let partyPlaylist = [];
         partyPlaylist = data.map((item) => {
@@ -101,12 +102,12 @@ class App extends Component {
         hostPartyClicked: false,
       });
       this.toggleHost();
-      axios.put(`${URL}:${envPORT}/vote/`, {
+      putVotes({
         url: null,
         direction: null,
         accessCode,
         reset: true
-      });
+      })
     } else {
       this.setState({
         joinPartyClicked: false
@@ -123,7 +124,7 @@ class App extends Component {
     const { currentId, hostPartyClicked } = this.state;
     // const accessCode = this.state.accessCode || this.makeID()
     if (!hostPartyClicked) {
-      axios.post(`${URL}:${envPORT}/host`, {
+      postHost({
         host: true,
         id: currentId,
       })
@@ -137,7 +138,7 @@ class App extends Component {
         hostPartyClicked: false,
         accessCode: null
       });
-      axios.post(`${URL}:${envPORT}/host`, {
+      postHost({
         host: false,
         id: currentId,
       });
@@ -146,15 +147,14 @@ class App extends Component {
 
   responseGoogle(response) {
     console.log('google response', response);
-    console.log('post request URL', `${URL}:${envPORT}/login`);
-    console.log('post request BODY', {
-      firstName: response.profileObj.givenName,
-      lastName: response.profileObj.familyName,
-      host: false,
-      email: response.profileObj.email,
-    });
-    axios
-      .post(`${URL}:${envPORT}/login`, {
+    // console.log('post request URL', `${URL}:${PORT}/login`);
+    // console.log('post request BODY', {
+    //   firstName: response.profileObj.givenName,
+    //   lastName: response.profileObj.familyName,
+    //   host: false,
+    //   email: response.profileObj.email,
+    // });
+      postLogin({
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
         host: false,
@@ -192,8 +192,7 @@ class App extends Component {
     const { searchTerm } = this.state;
     if (e === 'click' && searchTerm.length) {
       console.log('searched', searchTerm);
-      axios
-        .get('https://www.googleapis.com/youtube/v3/search', {
+      getYouTube({
           params: {
             key: YOUTUBE_API_KEY,
             q: searchTerm,
@@ -229,13 +228,12 @@ class App extends Component {
       window.ytPlayer.loadVideoById(video.id.videoId);
       // player.stopVideo();
     } else {
-      axios
-        .post(`${URL}:${envPORT}/playlist/${currentId}`, {
+        postPlaylist({
           url: video.id.videoId,
           title: video.snippet.title,
           artist: video.snippet.channelTitle,
           thumbnail: video.snippet.thumbnails.default.url,
-        })
+        }, currentId)
         .then(({ data }) => {
           if (data === false) {
             // If song doesn't already exist in database

@@ -88,8 +88,9 @@ router.put('/vote', async (req, res) => {
 
 router.get('/party/:code', async (req, res) => {
   const accessCode = req.params.code;
-
+  
   const party = await Party.findOne({ where: { accessCode } });
+  console.log('the access code', accessCode, 'the party', party)
   const playlist = await Playlist.findOne({ where: { userId: party.hostId } })
 
   const playlistSongs = await PlaylistSong.findAll({ where: { playlistId: playlist.id } }, {raw: true})

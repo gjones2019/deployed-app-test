@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 var tag = document.createElement('script');
 
 function getNextVid() {
