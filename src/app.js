@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import UserPage from './userPage.js';
 import PartyPage from './partyPage.js';
 import QueueEntry from './queueEntry.js';
-// import exampleVideoData from '../fakeData.js';
 import GoogleLogin from 'react-google-login';
-// import axios from 'axios';
 import { } from './axiosRequests.js'
-import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID, PORT } from '../config.js';
+import { YOUTUBE_API_KEY, OAUTH_CLIENT_ID } from '../config.js';
 import { getParty, putVotes, postHost, postLogin, getYouTube, postPlaylist } from './axiosRequests'
-import { Route, BrowserRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import player from './youTubeScript.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Button, Jumbotron, OverlayTrigger, Popover } from 'react-bootstrap';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -42,9 +41,7 @@ class App extends Component {
 
   componentDidMount() {
     $('#player').toggle();
-    // window.axios = axios;
   }
-  // Authorization: login
 
   handleFormChange(event) {
     return this.setState({
@@ -100,6 +97,7 @@ class App extends Component {
       window.ytPlayer.stopVideo();
       this.setState({
         hostPartyClicked: false,
+        nowPlaying: null
       });
       this.toggleHost();
       putVotes({
@@ -110,19 +108,14 @@ class App extends Component {
       })
     } else {
       this.setState({
-        joinPartyClicked: false
+        joinPartyClicked: false,
+        nowPlaying: null
       })
     }
-    // return (
-    //   <BrowserRouter>
-    //     <Route to="/"></Route>
-    //   </BrowserRouter>
-    // );
   }
 
   toggleHost() {
     const { currentId, hostPartyClicked } = this.state;
-    // const accessCode = this.state.accessCode || this.makeID()
     if (!hostPartyClicked) {
       postHost({
         host: true,
@@ -146,14 +139,6 @@ class App extends Component {
   }
 
   responseGoogle(response) {
-    console.log('google response', response);
-    // console.log('post request URL', `${URL}:${PORT}/login`);
-    // console.log('post request BODY', {
-    //   firstName: response.profileObj.givenName,
-    //   lastName: response.profileObj.familyName,
-    //   host: false,
-    //   email: response.profileObj.email,
-    // });
       postLogin({
         firstName: response.profileObj.givenName,
         lastName: response.profileObj.familyName,
@@ -161,7 +146,6 @@ class App extends Component {
         email: response.profileObj.email,
       })
       .then(({ data }) => {
-        console.log('response from server:', data);
         let userPlaylist = [];
         let video = {};
         if (data.songs) {
@@ -183,7 +167,6 @@ class App extends Component {
           userPlaylist,
           video: userPlaylist[0] || video,
         });
-        // console.log(response, 'profile obj:', response.profileObj);
       });
   }
 
@@ -221,12 +204,10 @@ class App extends Component {
   // Handles Clicks on YouTube Search Results
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
-    // console.log('clicked list item', video);
 
     if (hostPartyClicked) {
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
-      // player.stopVideo();
     } else {
         postPlaylist({
           url: video.id.videoId,
@@ -307,15 +288,10 @@ class App extends Component {
         />
       );
     }
-
     return (
-      <div>
-        {/* <BrowserRouter>
-          <Link to={`/${this.makeID()}`}>
-            <button>GENERATE ACCESS CODE</button>
-          </Link>
-        </BrowserRouter> */}
-
+  <Container style={{ display: "flex", justifyContent: 'center', border: "8px solid #cecece" }}>
+  <Row style={{ padding: "5px" }}>
+    <Col>
         <UserPage
           clickHostParty={this.clickHostParty}
           clickJoinParty={this.clickJoinParty}
@@ -327,16 +303,9 @@ class App extends Component {
           accessCode={accessCode}
           currentUser={currentUser}
         />
-      </div>
-      // User component:
-      // Playlist component
-      // button: HOST PARTY
-      // input: ACCESS CODE
-      // Search component
-
-      // Party component:
-      // VideoPlayer component
-      // Queue component (include votes)
+    </Col>
+  </Row>
+  </Container>
     );
   }
 }

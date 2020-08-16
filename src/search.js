@@ -1,10 +1,12 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 
 const Search = ({ searchHandler }) => {
   return (
-    <div>
+    <div style={{ fontWeight: "bold", fontFamily: "verdana"}}>
+      Add a Song:
       <input onChange={searchHandler} />
-      <button onClick={() => searchHandler('click')}>Search</button>
+      <Button onClick={() => searchHandler('click')}>Search</Button>
     </div>
   );
 };

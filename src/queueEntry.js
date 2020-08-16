@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { PORT, URL } from '../config.js';
 import { putVotes } from './axiosRequests';
+import Button from 'react-bootstrap/Button';
+import Image from "react-bootstrap/Image"
 
 
 const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId }) => {
@@ -21,33 +21,27 @@ const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId 
   return (
     <div>
       <div>
-        <img src={video.snippet.thumbnails.default.url} onClick={() => listClickHandler(video)}></img>
+        <Image src={video.snippet.thumbnails.default.url} onClick={() => listClickHandler(video)} rounded></Image>
       </div>
       <div>
         <div onClick={() => listClickHandler(video)}>{video.snippet.title}</div>
         <div>{video.snippet.channelTitle}</div>
         <div>{voteCount} votes</div>
         <div>
-          <button
+          <Button
             className="voteUp"
             onClick={() => {
-              // setVoteCount(voteCount + 1);
               voteUpdate('up');
-            }
-            }
-          >
+            }}>
             Up vote
-          </button>
-          <button
+          </Button>
+          <Button
             className="voteDown"
             onClick={() => {
-              // setVoteCount(voteCount - 1)
               voteUpdate('down');
-            }
-            }
-          >
+            }}>
             Down vote
-          </button>
+          </Button>
         </div>
       </div>
     </div>

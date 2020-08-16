@@ -1,16 +1,10 @@
 // require('dotenv').config();
-
 const Sequelize = require('sequelize');
-// const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
-const DB_NAME = 'greenfield'
-const DB_USER = 'admin'
-const DB_PASS = 'jukejams'
-const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com'
-
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST, DB_PORT } = require('../config')
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect:  'mysql',
-  port:     3306,
+  port:     DB_PORT,
   host:     DB_HOST,
 });
 
@@ -190,9 +184,6 @@ const PartySongUser = sequelize.define('PartySongUser', {
 				Party.sync({ force: true });
 				PartySongUser.sync({ force: true });
       })
-      // .then(() => {
-      //   return [User, Song, Playlist, PlaylistSong, Party];
-      // })
       .catch((err) => {
         console.log(err);
       });

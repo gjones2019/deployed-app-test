@@ -2,6 +2,7 @@ import React from 'react';
 import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
 import { Route, BrowserRouter, Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 const PartyPage = ({
   video,
@@ -20,7 +21,7 @@ const PartyPage = ({
 }) => {
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
-    <div>
+    <div style={{ color: "black", backgroundColor: "#ECEBEB", fontFamily: "fantasy", textalign: "center", fontSize: 65, fontWeight: 600, textAlign: "center", padding: "10px 20px" }}>
       Your Party Access Code is: {`${accessCode}`}
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
       <Queue
@@ -30,11 +31,7 @@ const PartyPage = ({
         voteUpdate={voteUpdate}
         userId={userId}
       />
-      {/* <BrowserRouter>
-        <Link to="/ "> */}
-          <button onClick={() => dropHostParty()}>{buttonText}</button>{' '}
-        {/* </Link>
-      </BrowserRouter> */}
+          <Button onClick={() => dropHostParty()}>Drop Hosted Party</Button>{' '}
     </div>
   );
 };

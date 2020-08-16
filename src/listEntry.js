@@ -1,16 +1,19 @@
 import React from 'react';
+import {Image, ListGroupItem } from "react-bootstrap/";
 
 const ListEntry = ({ video, listClickHandler }) => {
   return (
-    <div onClick={() => listClickHandler(video)}>
-      <div>
-        <img src={video.snippet.thumbnails.default.url}></img>
+    <ListGroupItem action style={{padding: "5%"}}>
+      <div onClick={() => listClickHandler(video) }>
+        <div style={{ padding: "2%", backgroundColor: "#ECEBEB", borderStyle: "groove"}} >
+          <Image src={video.snippet.thumbnails.default.url} roundedCircle></Image>
+          <div style={{ class: "column", display: "table"}}>
+            <div style={{ fontSize: "1.4em", fontFamily: "Lucida Bright", fontWeight: "bolder", strokeWidth: ""}}>{video.snippet.title}</div>
+            <div style={{ color:"#1B4CAF ", fontSize: "1.2em", fontFamily: "Avanta Garde", fontWeight: "bolder", strokeWidth: "13", fontColor: "blue"}}>{video.snippet.channelTitle}</div>
+          </div>
+        </div>
       </div>
-      <div>
-        <div>{video.snippet.title}</div>
-        <div>{video.snippet.channelTitle}</div>
-      </div>
-    </div>
+    </ListGroupItem>
   );
 };
 
