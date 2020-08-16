@@ -8,12 +8,12 @@ const cors = require('cors');
 const { router } = require('./routes.js');
 const app = express();
 
-//Parsing and cors
+// Parsing and cors
 app.use(express.json());
 app.use(cors());
 
 
-//Serve client files
+// Serve client files
 app.use(express.static(DIST_DIR));
 app.use('/', cors(), router);
 

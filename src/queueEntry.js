@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-
+// Host playlist entry
 const QueueEntry = ({ video, listClickHandler }) => {
   const [voteCount, setVoteCount] = useState(0);
   const voteUpUpdate= () => {
     axios.put('http://localhost:3000/vote/', {
-      // vote: voteCount + 1,
       title: video.snippet.title,
     })
     .then(({ data }) => {

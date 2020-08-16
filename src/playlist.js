@@ -1,9 +1,7 @@
 import React from 'react';
 
-// import ListEntry from './listEntry.js';
-
+// User playlist
 const Playlist = ({ userPlaylist }) => {
-  // console.log(videos);
   return (
     <div>
       <h3>Your Playlist:</h3>

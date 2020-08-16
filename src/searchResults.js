@@ -1,6 +1,7 @@
 import React from 'react';
 import ListEntry from './listEntry.js';
 
+// Song search list
 const SearchResults = ({ videos, listClickHandler }) => {
   return (
     <div>

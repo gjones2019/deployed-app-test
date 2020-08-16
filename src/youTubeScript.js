@@ -4,8 +4,7 @@ let tag = document.createElement('script');
       let firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      //    This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
+      // This function creates an <iframe> (and YouTube player) after the API code downloads.
       let player;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
@@ -18,9 +17,9 @@ let tag = document.createElement('script');
         });
       }
 
-      //    The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
+      // The API calls this function when the player's state changes.
+      // The function indicates that when playing a video (state=1)
+      // The player should play for six seconds and then stop.
       function onPlayerStateChange(event) {
         if (event.data === 0) {
           console.log('video finished')

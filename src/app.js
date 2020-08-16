@@ -32,7 +32,7 @@ class App extends Component {
     this.makeID = this.makeID.bind(this);
   }
 
-  //Toggles the player
+  // Toggles the player
   componentDidMount() {
     $('#player').toggle();
   }
@@ -44,7 +44,7 @@ class App extends Component {
     });
   }
 
-  //Creates our unique access codes
+  // Creates our unique access codes
   makeID() {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -55,7 +55,7 @@ class App extends Component {
     return result;
   }
 
-  //Host party click handler
+  // Host a party click handler
   clickHostParty() {
     $('#player').toggle();
     player.playVideo();
@@ -65,7 +65,7 @@ class App extends Component {
     this.toggleHost();
   }
 
-  //Drop host party click handler
+  // Drop party click handler
   dropHostParty() {
     this.setState({
       hostPartyClicked: false,
@@ -77,7 +77,7 @@ class App extends Component {
     );
   }
 
-  //Axios post request to toggle host in db
+  // Axios post request to toggle host status
   toggleHost() {
     const { currentUser, hostPartyClicked } = this.state;
     console.log('Here is the ID:', this.makeID());
@@ -97,7 +97,7 @@ class App extends Component {
     }
   }
 
-
+  // Google auth response
   responseGoogle(response) {
       console.log(response.details)
     axios
@@ -130,11 +130,10 @@ class App extends Component {
           userPlaylist,
           video: userPlaylist[0] || video,
         });
-        // console.log(response, 'profile obj:', response.profileObj);
       });
   }
 
-  // YouTube Search Helper Function
+  // YouTube search helper function
   searchHandler(e) {
     const { searchTerm } = this.state;
     if (e === 'click' && searchTerm.length) {
@@ -154,7 +153,6 @@ class App extends Component {
           console.log(data.items);
           this.setState({
             videos: data.items,
-            // video: data.items[0],
           });
         })
         .catch((err) => {
@@ -166,7 +164,8 @@ class App extends Component {
       });
     }
   }
-  // Handles Clicks on YouTube Search Results
+
+  // Handles clicks on youtube search results list
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
     console.log('clicked list item', video);
@@ -174,7 +173,6 @@ class App extends Component {
     if (hostPartyClicked) {
       this.setState({ video });
       player.loadVideoById(video.id.videoId);
-      // player.stopVideo();
     } else {
       axios
         .post(`http://localhost:3000/playlist/${currentId}`, {
@@ -185,7 +183,6 @@ class App extends Component {
         })
         .then(({ data }) => {
           if (data === false) {
-            // If song doesn't already exist in database
             this.setState({
               userPlaylist: userPlaylist.concat([video]),
               video: userPlaylist[0],
@@ -207,6 +204,7 @@ class App extends Component {
       userPlaylist,
       code,
     } = this.state;
+
     //if hostParty is clicked, render the Party Page
     if (hostPartyClicked) {
       return (
@@ -221,9 +219,10 @@ class App extends Component {
         />
       );
     }
-    //If the login is not complete render the google auth again
+    // If the login is not complete, then render the google auth again
     if (!loginComplete) {
       return (
+        // Google auth
         <GoogleLogin
           clientId={OAUTH_CLIENT_ID}
           buttonText="Login"
@@ -233,7 +232,7 @@ class App extends Component {
         />
       );
     }
-    //Renders the access code route and user sage upon login
+    // Renders the access code route and user page upon login
     return (
       <div>
         <BrowserRouter>
@@ -252,15 +251,6 @@ class App extends Component {
           code={code}
         />
       </div>
-      // User component:
-      // Playlist component
-      // button: HOST PARTY
-      // input: ACCESS CODE
-      // Search component
-
-      // Party component:
-      // VideoPlayer component
-      // Queue component (include votes)
     );
   }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// User song list entry
 const ListEntry = ({ video, listClickHandler }) => {
   return (
     <div onClick={() => listClickHandler(video)}>

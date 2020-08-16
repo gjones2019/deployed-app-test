@@ -1,6 +1,7 @@
 import React from 'react';
 import QueueEntry from './queueEntry.js';
 
+// Host Playlist
 const Queue = ({ userPlaylist, listClickHandler }) => {
   return (
     <div>

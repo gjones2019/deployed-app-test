@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Song search
 const Search = ({ searchHandler }) => {
   return (
     <div>

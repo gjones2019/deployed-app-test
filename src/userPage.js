@@ -4,6 +4,7 @@ import Playlist from './playlist.js';
 import Search from './search.js';
 import { BrowserRouter, Link } from 'react-router-dom';
 
+// User page
 const UserPage = ({
   videos,
   clickHostParty,

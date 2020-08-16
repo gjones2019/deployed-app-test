@@ -3,6 +3,8 @@ import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
 import { BrowserRouter, Link } from 'react-router-dom';
 
+
+// Party page
 const PartyPage = ({
   video,
   userPlaylist,

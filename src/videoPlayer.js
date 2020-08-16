@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Video player
 const VideoPlayer = ({ video }) => {
   return (
     <div>
