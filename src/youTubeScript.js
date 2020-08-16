@@ -1,9 +1,9 @@
-const axios = require('axios')
+const axios = require('axios');
 
 var tag = document.createElement('script');
 
 function getNextVid() {
-  return axios.get(`http://localhost:3000/party/${accessCode}`)
+  return axios.get(`http://localhost:42368/party/${accessCode}`)
 }
 
       tag.src = "https://www.youtube.com/iframe_api";
