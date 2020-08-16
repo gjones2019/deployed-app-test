@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
-import { putVotes } from './axiosRequests';
+// import { putVotes } from './axiosRequests';
 import Button from 'react-bootstrap/Button';
 import Image from "react-bootstrap/Image"
 import ListGroup from "react-bootstrap/ListGroup";
 
 
-const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId }) => {
+const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist }) => {
   const [voteCount, setVoteCount] = useState(0);
-  const voteUpdate = (direction) => {
-    putVotes({
-      userId,
-      url: video.id.videoId,
-      direction,
-      accessCode
-    })
-    .then(({ data }) => {
-      setVoteCount(data.newVoteCount || 0);
-    })
-  }
   // voteUpdate()
   return (
     <ListGroup style={{ padding: "5%" }}>
@@ -32,14 +21,14 @@ const QueueEntry = ({ video, listClickHandler, sortPlaylist, accessCode, userId 
           <Button
             className="voteUp"
             onClick={() => {
-              voteUpdate('up');
+              voteUpdate(setVoteCount, video, 'up');
             }}>
             Up vote
           </Button>
           <Button
             className="voteDown"
             onClick={() => {
-              voteUpdate('down');
+              voteUpdate(setVoteCount, video, 'down');
             }}>
             Down vote
           </Button>

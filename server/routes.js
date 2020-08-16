@@ -9,11 +9,6 @@ const {
     PartySongUser
   } = require('../db/database.js');
 
-//Set up routes
-// router.get('/', (req, res) => {
-// 	res.sendFile(HTML_FILE);
-// });
-
 //Login route
 router.post('/login', async (req, res) => {
   const user = await User.findOne({ where: { email: req.body.email } })

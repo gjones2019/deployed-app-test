@@ -225,6 +225,19 @@ class App extends Component {
     }
   }
 
+  voteUpdate(setVoteCount, video, direction) {
+    const { userId, accessCode } = this.state;
+    putVotes({
+      userId,
+      url: video.id.videoId,
+      direction,
+      accessCode
+    })
+    .then(({ data }) => {
+      setVoteCount(data.newVoteCount || 0);
+    })
+  }
+
   // sortPlaylist() {
   //   const { userPlaylist } = this.state;
 
@@ -268,8 +281,6 @@ class App extends Component {
           listClickHandler={this.listClickHandler}
           toggleHost={this.toggleHost}
           voteUpdate={this.voteUpdate}
-          accessCode={accessCode}
-          userId={currentId}
           nowPlaying={nowPlaying}
         />
       );

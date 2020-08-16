@@ -14,10 +14,9 @@ const PartyPage = ({
   listClickHandler,
   voteUpdate,
   clickHostParty,
-  accessCode,
-  userId,
   nowPlaying,
-  partyPlaylist
+  partyPlaylist,
+  voteUpdate
 }) => {
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
@@ -25,11 +24,9 @@ const PartyPage = ({
       Your Party Access Code is: {`${accessCode}`}
       <VideoPlayer video={video} nowPlaying={nowPlaying} />
       <Queue
-        accessCode={accessCode}
         partyPlaylist={partyPlaylist}
         listClickHandler={listClickHandler}
         voteUpdate={voteUpdate}
-        userId={userId}
       />
           <Button onClick={() => dropHostParty()}>Drop Hosted Party</Button>{' '}
     </div>
