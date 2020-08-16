@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import {Image, ListGroupItem } from "react-bootstrap/";
 
-const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteClicked, votes }) => {
+const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, votes }) => {
   // const [voteCount, setVoteCount] = useState(0);
   // video.votes = video.votes || 0
   // let voteCountText = voteClicked ? voteCount : video.votes

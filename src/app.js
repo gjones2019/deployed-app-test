@@ -28,7 +28,6 @@ class App extends Component {
       nextVideo: {},
       accessCode: null,
       nowPlaying: null,
-      voteClicked: false,
       votes: {}
     };
     this.clickHostParty = this.clickHostParty.bind(this);
@@ -113,8 +112,7 @@ class App extends Component {
     } else {
       this.setState({
         joinPartyClicked: false,
-        nowPlaying: null,
-        voteClicked: false
+        nowPlaying: null
       })
     }
   }
@@ -297,7 +295,6 @@ class App extends Component {
       currentId,
       nowPlaying,
       partyPlaylist,
-      voteClicked,
       votes
     } = this.state;
     window.accessCode = accessCode;
@@ -311,7 +308,6 @@ class App extends Component {
           listClickHandler={this.listClickHandler}
           toggleHost={this.toggleHost}
           voteUpdate={this.voteUpdate}
-          voteClicked={voteClicked}
           nowPlaying={nowPlaying}
           votes={votes}
         />
