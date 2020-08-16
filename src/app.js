@@ -55,9 +55,6 @@ class App extends Component {
 
   clickJoinParty() {
     const { accessCode, votes } = this.state;
-    this.setState({
-      joinPartyClicked: true,
-    });
     getParty(accessCode)
       .then(({ data }) => {
         let partyPlaylist = [];
@@ -78,7 +75,7 @@ class App extends Component {
             id: { videoId: song.url },
           };
         });
-        this.setState({ partyPlaylist, votes });
+        this.setState({ partyPlaylist, votes, joinPartyClicked: true });
         this.refreshParty(true);
       })
   }
@@ -179,28 +176,29 @@ class App extends Component {
   }
 
   refreshParty(bool) {
-    console.log('called refresh party')
-    const { accessCode, votes } = this.state;
+    console.log('called refresh party with', bool)
+    const { votes } = this.state;
     let refresh;
     if (bool) {
-      console.log('args are true')
       refresh = setInterval(() => {
         console.log('ran refresh')
-        getParty(window.accessCode)
-        .then(({ data }) => {
-          console.log('got response from server', data)
-          data.forEach(item => {
-            const { song, vote, nowPlaying } = item
-            votes[song.url] = vote
-            if (nowPlaying) {
-              this.setState({ nowPlaying: song })
-            }
+        if (window.accessCode) {
+          getParty(window.accessCode)
+          .then(({ data }) => {
+            data.forEach(item => {
+              const { song, vote, nowPlaying } = item
+              votes[song.url] = vote
+              if (nowPlaying) {
+                this.setState({ nowPlaying: song })
+              }
+            })
+            this.setState({ votes })
           })
-          this.setState({ votes })
-        })
+        }
       }, 5000)
     } else {
-      clearInterval(refresh);
+      console.log('cancelling refresh');
+      clearTimeout(refresh);
     }
   }
 
