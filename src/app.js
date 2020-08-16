@@ -40,6 +40,7 @@ class App extends Component {
     this.handleFormChange = this.handleFormChange.bind(this);
     this.clickJoinParty = this.clickJoinParty.bind(this);
     this.voteUpdate = this.voteUpdate.bind(this);
+    this.refreshParty = this.refreshParty.bind(this);
   }
 
   componentDidMount() {
@@ -78,6 +79,7 @@ class App extends Component {
           };
         });
         this.setState({ partyPlaylist, votes });
+        this.refreshParty(true);
       })
   }
 
@@ -91,10 +93,12 @@ class App extends Component {
         partyPlaylist: this.state.userPlaylist
       });
       this.toggleHost();
+      this.refreshParty(true);
     }
   }
 
   dropHostParty() {
+    this.refreshParty(false);
     if (this.state.hostPartyClicked) {
       $('#player').toggle();
       window.ytPlayer.stopVideo();
@@ -175,9 +179,28 @@ class App extends Component {
   }
 
   refreshParty(bool) {
+    console.log('called refresh party')
+    const { accessCode, votes } = this.state;
     let refresh;
     if (bool) {
-      refresh = setInterval(() => getParty)
+      console.log('args are true')
+      refresh = setInterval(() => {
+        console.log('ran refresh')
+        getParty(accessCode)
+        .then(({ data }) => {
+          console.log('got response from server', data)
+          data.forEach(item => {
+            const { song, vote, nowPlaying } = item
+            votes[song.url] = vote
+            if (nowPlaying) {
+              this.setState({ nowPlaying: song })
+            }
+          })
+          this.setState({ votes })
+        })
+      }, 5000)
+    } else {
+      clearInterval(refresh);
     }
   }
 
