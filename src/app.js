@@ -279,6 +279,7 @@ class App extends Component {
       voteClicked
     } = this.state;
     window.accessCode = accessCode;
+    console.log('host party clicked?', hostPartyClicked)
     if (hostPartyClicked || joinPartyClicked) {
       return (
         <PartyPage
