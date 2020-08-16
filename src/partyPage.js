@@ -1,7 +1,6 @@
 import React from 'react';
 import Queue from './queue.js';
 import VideoPlayer from './videoPlayer.js';
-import { Route, BrowserRouter, Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
 const PartyPage = ({
