@@ -4,7 +4,7 @@ const axios = require('axios');
 // const { URL } = require('../config');
 const URL = 'http://jukejams.herokuapp.com';
 const PORT = 3000;
-// const URL = 'http://localhost';
+// const URL = 'http://localhost'
 
 
 const getParty = (accessCode) => {
