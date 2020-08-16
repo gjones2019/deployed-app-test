@@ -205,7 +205,7 @@ class App extends Component {
   // Handles Clicks on YouTube Search Results
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
-
+    console.log('host party clicked?', hostPartyClicked, 'video?', video);
     if (hostPartyClicked) {
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
@@ -279,7 +279,6 @@ class App extends Component {
       voteClicked
     } = this.state;
     window.accessCode = accessCode;
-    console.log('host party clicked?', hostPartyClicked)
     if (hostPartyClicked || joinPartyClicked) {
       return (
         <PartyPage

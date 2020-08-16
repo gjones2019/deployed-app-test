@@ -16,7 +16,8 @@ const PartyPage = ({
   voteClicked,
   clickHostParty,
   nowPlaying,
-  partyPlaylist
+  partyPlaylist,
+  hostPartyClicked
 }) => {
   const buttonText = hostPartyClicked ? 'Drop Hosted Party' : 'Leave Party';
   return (
@@ -29,7 +30,7 @@ const PartyPage = ({
         voteUpdate={voteUpdate}
         voteClicked={voteClicked}
       />
-          <Button onClick={() => dropHostParty()}>Drop Hosted Party</Button>{' '}
+          <Button onClick={() => dropHostParty()}>{buttonText}</Button>{' '}
     </div>
   );
 };
