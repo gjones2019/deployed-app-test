@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import {Image, ListGroupItem } from "react-bootstrap/";
 
-const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist }) => {
+const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteClicked }) => {
   const [voteCount, setVoteCount] = useState(0);
   // voteUpdate()
+  const voteCountText = voteClicked ? voteCount : video.votes
   return (
     <ListGroupItem action style={{padding: "5%"}}>
       <div>

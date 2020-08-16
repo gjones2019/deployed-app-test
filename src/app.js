@@ -27,7 +27,8 @@ class App extends Component {
       redirect: false,
       nextVideo: {},
       accessCode: null,
-      nowPlaying: null
+      nowPlaying: null,
+      voteClicked: false
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -110,7 +111,8 @@ class App extends Component {
     } else {
       this.setState({
         joinPartyClicked: false,
-        nowPlaying: null
+        nowPlaying: null,
+        voteClicked: false
       })
     }
   }
@@ -228,6 +230,9 @@ class App extends Component {
 
   voteUpdate(setVoteCount, video, direction) {
     const { userId, accessCode } = this.state;
+    this.setState({
+      voteClicked: true
+    })
     putVotes({
       userId,
       url: video.id.videoId,
@@ -269,7 +274,8 @@ class App extends Component {
       currentUser,
       currentId,
       nowPlaying,
-      partyPlaylist
+      partyPlaylist,
+      voteClicked
     } = this.state;
     window.accessCode = accessCode;
     if (hostPartyClicked || joinPartyClicked) {
@@ -282,6 +288,7 @@ class App extends Component {
           listClickHandler={this.listClickHandler}
           toggleHost={this.toggleHost}
           voteUpdate={this.voteUpdate}
+          voteClicked={voteClicked}
           nowPlaying={nowPlaying}
         />
       );
