@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 // import { putVotes } from './axiosRequests';
 import Button from 'react-bootstrap/Button';
-import Image from "react-bootstrap/Image"
-import ListGroup from "react-bootstrap/ListGroup";
-
+import {Image, ListGroupItem } from "react-bootstrap/";
 
 const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist }) => {
   const [voteCount, setVoteCount] = useState(0);
   // voteUpdate()
   return (
-    <ListGroup style={{ padding: "5%" }}>
+    <ListGroupItem action style={{padding: "5%"}}>
       <div>
         <Image src={video.snippet.thumbnails.default.url} onClick={() => listClickHandler(video)} rounded></Image>
       </div>
@@ -34,7 +32,7 @@ const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist }) => {
           </Button>
         </div>
       </div>
-    </ListGroup>
+    </ListGroupItem>
   );
 };
 
