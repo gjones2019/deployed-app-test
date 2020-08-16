@@ -58,7 +58,6 @@ class App extends Component {
     });
     getParty(accessCode)
       .then(({ data }) => {
-        console.log('response from server for get party',data);
         let partyPlaylist = [];
         partyPlaylist = data.map((item) => {
           const { song } = item;
@@ -77,7 +76,6 @@ class App extends Component {
             votes: item.vote || 0
           };
         });
-        console.log('the mapped playlist', partyPlaylist)
         this.setState({ partyPlaylist });
       })
   }
@@ -179,7 +177,6 @@ class App extends Component {
   searchHandler(e) {
     const { searchTerm } = this.state;
     if (e === 'click' && searchTerm.length) {
-      console.log('searched', searchTerm);
       getYouTube({
           params: {
             key: YOUTUBE_API_KEY,
@@ -191,7 +188,6 @@ class App extends Component {
           },
         })
         .then(({ data }) => {
-          console.log(data.items);
           this.setState({
             videos: data.items,
             // video: data.items[0],
@@ -231,12 +227,13 @@ class App extends Component {
   }
 
   voteUpdate(setVoteCount, video, direction) {
-    const { userId, accessCode } = this.state;
+    const { currentId, accessCode } = this.state;
+    console.log()
     this.setState({
       voteClicked: true
     })
     putVotes({
-      userId,
+      userId: currentId,
       url: video.id.videoId,
       direction,
       accessCode
