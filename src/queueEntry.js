@@ -5,8 +5,8 @@ import {Image, ListGroupItem } from "react-bootstrap/";
 
 const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteClicked }) => {
   const [voteCount, setVoteCount] = useState(0);
-  // voteUpdate()
-  // const voteCountText = voteClicked ? voteCount : video.votes
+  video.votes = video.votes || 0
+  const voteCountText = voteClicked ? voteCount : video.votes
   console.log('this is a video thats supposed to be rendered', video);
   return (
     <ListGroupItem action style={{padding: "5%"}}>
@@ -16,7 +16,7 @@ const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteCli
       <div>
         <div onClick={() => listClickHandler(video)}>{video.snippet.title}</div>
         <div>{video.snippet.channelTitle}</div>
-        <div>{voteCount} votes</div>
+        <div>{voteCountText} votes</div>
         <div>
           <Button
             className="voteUp"
