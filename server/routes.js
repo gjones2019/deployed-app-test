@@ -133,10 +133,14 @@ router.post('/host', async (req, res) => {
   }
 });
 
-router.post('/playlist', async (req, res) => {
-  const { userId, url } = req.body;
+router.post('/playlist/:user', async (req, res) => {
+  // console.log('Request Params', req.params.user)
+  // console.log('Request Body', req.body)
+  // let songId;
+  // let playlistId;
+  const userId = req.params.user;
 
-  let song = await Song.findOne({ where: { url } }) // Look for song in the db
+  let song = await Song.findOne({ where: { url: req.body.url } }) // Look for song in the db
   let alreadyExists = false;
 
   if (song === null) {

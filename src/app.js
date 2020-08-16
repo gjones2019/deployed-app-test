@@ -211,8 +211,7 @@ class App extends Component {
     } else {
         postPlaylist({
           url: video.id.videoId,
-          currentId
-        })
+        }, currentId)
         .then(({ data }) => {
           if (data === false) {
             // If song doesn't already exist in database
