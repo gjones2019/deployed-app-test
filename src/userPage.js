@@ -11,7 +11,6 @@ const UserPage = ({
   searchHandler,
   listClickHandler,
   userPlaylist,
-  code,
   handleFormChange,
   handleFormSubmit,
   currentUser
