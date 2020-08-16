@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { putVotes } from './axiosRequests';
 import Button from 'react-bootstrap/Button';
 import {Image, ListGroupItem } from "react-bootstrap/";
 
