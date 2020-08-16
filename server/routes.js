@@ -109,6 +109,7 @@ router.post('/host', async (req, res) => {
   const party = await Party.findOne({ where: { hostId: id } });
   if (host === false) {
     user.update({ hostedPartyId: null });
+    res.sendStatus(200);
   } else {
     if (party === null) {
       let accessCode = '';

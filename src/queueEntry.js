@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import {Image, ListGroupItem } from "react-bootstrap/";
 
-const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteClicked }) => {
-  const [voteCount, setVoteCount] = useState(0);
+const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteClicked, votes }) => {
+  // const [voteCount, setVoteCount] = useState(0);
   // video.votes = video.votes || 0
-  let voteCountText = voteClicked ? voteCount : video.votes
-  voteCountText = voteCountText || 0;
+  // let voteCountText = voteClicked ? voteCount : video.votes
+  // voteCountText = voteCountText || 0;
   return (
     <ListGroupItem action style={{padding: "5%"}}>
       <div>
@@ -15,19 +15,19 @@ const QueueEntry = ({ video, listClickHandler, voteUpdate, sortPlaylist, voteCli
       <div>
         <div onClick={() => listClickHandler(video)}>{video.snippet.title}</div>
         <div>{video.snippet.channelTitle}</div>
-        <div>{voteCountText} votes</div>
+        <div>{votes[song.url] || 0} votes</div>
         <div>
           <Button
             className="voteUp"
             onClick={() => {
-              voteUpdate(setVoteCount, video, 'up');
+              voteUpdate(video, 'up');
             }}>
             Up vote
           </Button>
           <Button
             className="voteDown"
             onClick={() => {
-              voteUpdate(setVoteCount, video, 'down');
+              voteUpdate(video, 'down');
             }}>
             Down vote
           </Button>

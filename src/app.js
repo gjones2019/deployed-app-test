@@ -28,7 +28,8 @@ class App extends Component {
       nextVideo: {},
       accessCode: null,
       nowPlaying: null,
-      voteClicked: false
+      voteClicked: false,
+      votes: {}
     };
     this.clickHostParty = this.clickHostParty.bind(this);
     this.dropHostParty = this.dropHostParty.bind(this);
@@ -52,7 +53,7 @@ class App extends Component {
   }
 
   clickJoinParty() {
-    const { accessCode } = this.state;
+    const { accessCode, votes } = this.state;
     this.setState({
       joinPartyClicked: true,
     });
@@ -66,6 +67,7 @@ class App extends Component {
               nowPlaying: song
             })
           }
+          votes[song.url] = item.vote || 0
           return {
             snippet: {
               thumbnails: { default: { url: song.thumbnail } },
@@ -73,10 +75,9 @@ class App extends Component {
               channelTitle: song.artist,
             },
             id: { videoId: song.url },
-            votes: item.vote
           };
         });
-        this.setState({ partyPlaylist });
+        this.setState({ partyPlaylist, votes });
       })
   }
 
@@ -173,6 +174,13 @@ class App extends Component {
       });
   }
 
+  refreshParty(bool) {
+    let refresh;
+    if (bool) {
+      refresh = setInterval(() => getParty)
+    }
+  }
+
   // YouTube Search Helper Function
   searchHandler(e) {
     const { searchTerm } = this.state;
@@ -205,7 +213,6 @@ class App extends Component {
   // Handles Clicks on YouTube Search Results
   listClickHandler(video) {
     const { hostPartyClicked, currentId, userPlaylist } = this.state;
-    console.log('host party clicked?', hostPartyClicked, 'video?', video);
     if (hostPartyClicked) {
       this.setState({ video });
       window.ytPlayer.loadVideoById(video.id.videoId);
@@ -229,11 +236,11 @@ class App extends Component {
     }
   }
 
-  voteUpdate(setVoteCount, video, direction) {
-    const { currentId, accessCode } = this.state;
-    this.setState({
-      voteClicked: true
-    })
+  voteUpdate(video, direction) {
+    const { currentId, accessCode, votes } = this.state;
+    // this.setState({
+    //   voteClicked: true
+    // })
     putVotes({
       userId: currentId,
       url: video.id.videoId,
@@ -241,7 +248,11 @@ class App extends Component {
       accessCode
     })
     .then(({ data }) => {
-      setVoteCount(data.newVoteCount || 0);
+      // setVoteCount(data.newVoteCount || 0);
+      votes[video.id.videoId] = data.newVoteCount || 0
+      this.setState({
+        votes
+      })
     })
   }
 
@@ -276,7 +287,8 @@ class App extends Component {
       currentId,
       nowPlaying,
       partyPlaylist,
-      voteClicked
+      voteClicked,
+      votes
     } = this.state;
     window.accessCode = accessCode;
     if (hostPartyClicked || joinPartyClicked) {
@@ -291,6 +303,7 @@ class App extends Component {
           voteUpdate={this.voteUpdate}
           voteClicked={voteClicked}
           nowPlaying={nowPlaying}
+          votes={votes}
         />
       );
     }
