@@ -8,9 +8,9 @@ const URL = 'https://jukejams.herokuapp.com'
 // const URL = 'http://localhost'
 // const PORT = 3000;
 const DB_NAME = 'greenfield'
-const DB_USER = 'sgroot'
-const DB_PASS = ',7wApy3k7TrjLCiB'
-const DB_HOST = 'SG-Database-2937-master.servers.mongodirector.com'
+const DB_USER = 'admin'
+const DB_PASS = 'jukejams'
+const DB_HOST = 'jukey-db.c0ovotldczny.us-east-1.rds.amazonaws.com'
 const DB_PORT = 3306
 
 module.exports = {
