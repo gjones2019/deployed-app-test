@@ -1,11 +1,5 @@
-// require('dotenv').config();
 const axios = require('axios');
-// const { PORT } = process.env;
-// const { URL } = require('../config');
 const URL = 'https://jukejams.herokuapp.com';
-// const PORT = 42368;
-// const URL = 'http://localhost'
-
 
 const getParty = (accessCode) => {
   return axios.get(`${URL}/party/${accessCode}`)

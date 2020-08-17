@@ -4,9 +4,8 @@ import ListEntry from './listEntry.js';
 
 // Song search list
 const SearchResults = ({ videos, listClickHandler }) => {
-  // console.log(videos);
   return (
-    <ListGroup style={{ padding: "5%" }}> 
+    <ListGroup style={{ padding: "5%" }}>
     <div>
       {videos.map((video) => (
         <ListEntry video={video} listClickHandler={listClickHandler} />

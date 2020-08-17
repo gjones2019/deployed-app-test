@@ -42,16 +42,19 @@ class App extends Component {
     this.refreshParty = this.refreshParty.bind(this);
   }
 
+  // Toggles the initial player
   componentDidMount() {
     $('#player').toggle();
   }
 
+  // Handle's the access code
   handleFormChange(event) {
     return this.setState({
       accessCode: event.target.value,
     });
   }
 
+  // Join a Party click handler
   clickJoinParty() {
     const { accessCode, votes } = this.state;
     getParty(accessCode)
@@ -263,7 +266,6 @@ class App extends Component {
       votes
     } = this.state;
     window.accessCode = accessCode;
-
   //if hostParty is clicked, render the Party Page
     if (hostPartyClicked || joinPartyClicked) {
       return (

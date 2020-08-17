@@ -11,7 +11,6 @@ const DB_PORT = 3306
 module.exports = {
   OAUTH_CLIENT_ID,
   YOUTUBE_API_KEY,
-  // PORT,
   URL,
   DB_NAME,
   DB_HOST,
